@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>校园地图</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  >
+
+</head>
+
+<body>
+  <h1>吉林大学校园地图</h1>
+  <p>查找教学楼、食堂和其他校园地点。</p>
+
+  <div id="map"></div>
+  
+  <div class="filters"> 
+    <button data-category="全部">全部</button>
+    <button data-category="教学楼">教学楼</button>
+    <button data-category="食堂">食堂</button>
+    <button data-category="图书馆">图书馆</button>
+  </div>
+
+  <ul id="place-list"></ul>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="app.js"></script>
+
+
+</body>
+
+</html>
