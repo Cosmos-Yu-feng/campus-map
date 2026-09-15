@@ -1,6 +1,6 @@
 
+console.log("脚本开始执行");
 
-// const map = L.map("map").setView([43.88, 125.30], 17.5);
 const map = L.map("map").setView([43.82048, 125.26893], 17.5);
 
 
@@ -20,15 +20,6 @@ L.tileLayer(
 ).addTo(map);
 
 
-const marker = L.marker([43.82048, 125.26893]).addTo(map);
-marker.bindPopup("吉林大学前卫南区操场");
-
-const marker0 = L.marker([43.822611, 125.263206]).addTo(map);
-marker0.bindPopup("鼎新图书馆");
-
-const marker1 = L.marker([43.817974, 125.263345]).addTo(map);
-marker1.bindPopup("宋志平体育馆");
-
 map.on("click", (event) => {
   const latitude = event.latlng.lat;
   const longitude = event.latlng.lng;
@@ -43,13 +34,48 @@ map.on("click", (event) => {
 
 
 const places = [
-  { name: "经信教学楼", category: "教学楼" },
-  { name: "逸夫教学楼", category: "教学楼" },
-  { name: "中心校区食堂", category: "食堂" },
-  { name: "日新楼食堂", category: "食堂" },
-  { name: "鼎新图书馆", category: "图书馆"},
-  { name: "中心图书馆", category: "图书馆"}
+  {
+    name: "鼎新图书馆",
+    category: "图书馆",
+    latitude: 43.823,
+    longitude: 125.301
+  },
+  {
+    name: "湖畔餐厅",
+    category: "食堂",
+    latitude: 43.818020,
+    longitude:  125.267737
+  },
+  {
+    name: "基础园餐厅",
+    category: "食堂",
+    latitude: 43.823857,
+    longitude:  125.265827
+  },
+  {
+    name: "中心图书馆",
+    category: "图书馆",
+    latitude:43.820592, 
+    longitude:125.2774
+  },
+  {
+    name: "敬信楼",
+    category: "教学楼",
+    latitude: 43.817014, 
+    longitude: 125.265194
+  },
+  {
+    name: "李四光楼",
+    category: "教学楼",
+    latitude: 43.819491, 
+    longitude: 125.261976
+  },
 ];
+
+places.forEach((place) => {
+  L.marker([place.latitude, place.longitude]).addTo(map).bindPopup(`${place.name}（${place.category}）`);
+});
+
 
 
 const placeList = document.querySelector("#place-list");
