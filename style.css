@@ -19,6 +19,13 @@ button {
 
 li {
   margin-bottom: 10px;
+  /* padding: 8px 16px; */
+  cursor: pointer;
+}
+
+li.active {
+  background-color: #f4f5f6;
+  color: #3c0de7;
 }
 
 #map {

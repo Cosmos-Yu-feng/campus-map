@@ -1,0 +1,12 @@
+{
+    "type": "Feature",
+    "properties": {
+        "name":"鼎新图书馆",
+        "category": "图书馆"
+    },
+    "geometry": {
+        "type": "Point",
+        "coordinates": [125.301, 43.823]
+    }
+}
+
