@@ -1,36 +1,16 @@
 
 console.log("脚本开始执行");
-// 创建geojson对象
-const libraryGeoJSON = {
-    "type": "Feature",
-    "properties": {
-        "name":"鼎新图书馆",
-        "category": "图书馆"
-    },
-    "geometry": {
-        "type": "Point",
-        "coordinates": [125.263093, 43.822624]
-    }
-};
 
-const canteenGeoJSON = {
-  "type": "Feature",
-  "properties": {
-    "name": "湖畔餐厅",
-    "category": "食堂"
-  },
-  "geometry": {
-    "type":"Point",
-    "coordinates": [125.267737,43.818020,]
+// 配置对象的回调函数逻辑
+function handleFeature(feature, layer){
+  if (feature.geometry.type === "LineString"){
+    layer.bindPopup(`${feature.properties.name}`);
+    layer.addTo(routeLayer);
   }
-};
-
-const campusFeatures = {
-  "type": "FeatureCollection",
-  "features":[
-    libraryGeoJSON,
-    canteenGeoJSON
-  ]
+  else if (feature.geometry.type === "Polygon"){
+    layer.bindPopup(`${feature.properties.name}`);
+    layer.addTo(areaLayer);
+  }
 };
 
 // 地图对象
@@ -38,7 +18,6 @@ const map = L.map("map").setView([43.82048, 125.26893], 18);
 const markerLayer = L.layerGroup().addTo(map);
 const routeLayer = L.layerGroup().addTo(map);
 const areaLayer = L.layerGroup().addTo(map);
-L.geoJSON(campusFeatures).addTo(map);
 L.tileLayer(
   "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
   {
@@ -46,6 +25,24 @@ L.tileLayer(
     maxZoom: 19
   }
 ).addTo(map);
+
+// 创建外部数据变量
+let campusFeatures = [];
+
+// 读取geojson数据
+fetch("./campus.geojson")
+  .then((response) => response.json())
+  .then((data) => {
+    campusFeatures = data.features;
+    L.geoJSON(data, {onEachFeature: (feature, layer) => 
+      handleFeature(feature, layer)
+    });
+    renderPlaces("全部");
+  })
+  .catch((error) => {
+    console.error("GeoJSON 加载失败：", error);
+  });
+
 
 // 地图点击逻辑
 map.on("click", (event) => {
@@ -60,62 +57,6 @@ map.on("click", (event) => {
     .openOn(map);
 });
 
-// 地点对象
-const places = [
-  // {
-  //   name: "鼎新图书馆",
-  //   category: "图书馆",
-  //   latitude: 43.822624, 
-  //   longitude: 125.263093
-  // },
-  // {
-  //   name: "湖畔餐厅",
-  //   category: "食堂",
-  //   latitude: 43.818020,
-  //   longitude:  125.267737
-  // },
-  {
-    name: "基础园餐厅",
-    category: "食堂",
-    latitude: 43.823857,
-    longitude:  125.265827
-  },
-  {
-    name: "中心图书馆",
-    category: "图书馆",
-    latitude:43.820592, 
-    longitude:125.2774
-  },
-  {
-    name: "敬信楼",
-    category: "教学楼",
-    latitude: 43.817014, 
-    longitude: 125.265194
-  },
-  {
-    name: "李四光楼",
-    category: "教学楼",
-    latitude: 43.819491, 
-    longitude: 125.261976
-  },
-];
-
-// 路线对象
-const route = L.polyline([
-  [43.820592, 125.2774],
-  // [43.819491, 125.261976],
-  [43.817014, 125.265194],
-  [43.819491, 125.261976]
-]).addTo(routeLayer);
-
-// 区域范围对象
-const area = L.polygon([
-  [43.820949, 125.267943],
-  [43.821177, 125.269048],
-  [43.819803, 125.269745],
-  [43.819555, 125.268736],
-]).addTo(areaLayer);
-
 // 链接DOM对象和Java对象
 const placeList = document.querySelector("#place-list");
 const buttons = document.querySelectorAll(".filters button");
@@ -127,22 +68,27 @@ function renderPlaces(category) {
   markerLayer.clearLayers();
   
   // 过滤
-  const filteredPlaces = places.filter((place) => {
-    return category === "全部" || place.category === category;
+  const filteredFeatures = campusFeatures.filter((feature) => {
+    return (feature.geometry.type === "Point") && 
+    (category === "全部" || feature.properties.category === category);
   });
 
   // 过滤后对象的行为
-  filteredPlaces.forEach((place) => {
+  filteredFeatures.forEach((feature) => {
+    
     // 地图显示变化
-    const marker = L.marker([place.latitude, place.longitude]).addTo(markerLayer).bindPopup(`${place.name}（${place.category}）`); 
+    const marker = L.marker([feature.geometry.coordinates[1], feature.geometry.coordinates[0]])
+    .addTo(markerLayer)
+    .bindPopup(`${feature.properties.name}（${feature.properties.category}）`);
+
     // DOM对象变化
     const listItem = document.createElement("li");
-    listItem.textContent = `${place.name}（${place.category}）`;
+    listItem.textContent = `${feature.properties.name}（${feature.properties.category}）`;
     placeList.appendChild(listItem);
 
     // 点击地点DOM
     listItem.addEventListener("click", () => {
-      map.setView([place.latitude, place.longitude], 18);
+      map.setView([feature.geometry.coordinates[1], feature.geometry.coordinates[0]], 18);
       marker.openPopup();
     });
 
@@ -162,5 +108,3 @@ buttons.forEach((button) => {
     renderPlaces(button.dataset.category);
   });
 });
-
-renderPlaces("全部");

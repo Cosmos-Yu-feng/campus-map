@@ -1,0 +1,111 @@
+
+
+{
+    "type": "FeatureCollection",
+    "features": [
+    {
+        "type": "Feature",
+        "properties": {
+            "name":"鼎新图书馆",
+            "category": "图书馆"
+        },
+        "geometry": {
+            "type": "Point",
+            "coordinates": [125.263093, 43.822624]
+        }
+    },
+    {
+        "type": "Feature",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [125.265827,43.823857]
+        },
+        "properties": {
+            "name": "基础园餐厅",
+            "category": "食堂"
+        }
+    },
+    {
+        "type": "Feature",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [125.2774,43.820592]
+        },
+        "properties": {
+            "name": "中心图书馆",
+            "category":"图书馆"
+        }
+    },
+    {
+        "type": "Feature",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [125.265194,43.817014]
+        },
+        "properties": {
+            "name": "敬信楼",
+            "category": "教学楼"
+        }
+    },
+    {
+        "type": "Feature",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [125.261976,43.819491]
+        },
+        "properties": {
+            "name": "李四光楼",
+            "category": "教学楼"
+        }
+    },
+    {
+        "type": "Feature",
+        "properties": {
+            "name": "湖畔餐厅",
+            "category": "食堂"
+        },
+        "geometry": {
+            "type":"Point",
+            "coordinates": [125.267737,43.818020]
+        }
+    },
+    {
+        "type": "Feature",
+        "geometry": {
+            "type": "LineString",
+            "coordinates": [
+                [125.2774, 43.820592],
+                [125.265194, 43.817014],
+                [125.261976, 43.819491]
+            ]
+        },
+        "properties": {
+            "name": "路线一",
+            "category": "路线1"
+        }
+    },
+    {
+        "type": "Feature",
+        "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+                [
+                    [125.267943, 43.820949],
+                    [125.269048, 43.821177],
+                    [125.269745, 43.819803],
+                    [125.268736, 43.819555],
+                    [125.267943, 43.820949]
+                ]
+            ]
+        },
+        "properties": {
+            "name":"前卫南区田径场"
+        }
+    }
+    
+
+
+
+
+    ]
+}
